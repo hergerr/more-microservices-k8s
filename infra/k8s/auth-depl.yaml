@@ -15,6 +15,14 @@ spec:
       containers:
         - name: auth
           image: hergerr/auth
+          env:
+          # from k8s imperative secret
+          #  kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                    name: jwt-secret
+                    key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service

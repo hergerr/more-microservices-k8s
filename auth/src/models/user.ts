@@ -19,16 +19,30 @@ interface UserDoc extends mongoose.Document {
 }
 
 // these are mongoose types (not TS)
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String, // string in TS
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String, // string in TS
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  // custom preperties used when serialized to JSON
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret.__v;
+        // remove property from object
+        delete ret.password;
+        delete ret.__v;
+        delete ret._id;
+      },
+    },
+  }
+);
 
 // pre save hooks
 userSchema.pre("save", async function (done) {
