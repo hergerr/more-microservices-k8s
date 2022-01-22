@@ -32,8 +32,9 @@ beforeEach(async () => {
 
 // after all tests
 afterAll(async () => {
-  await mongo.stop();
+  // other way causes memory leaks
   await mongoose.connection.close();
+  await mongo.stop();
 });
 
 global.signin = async () => {
