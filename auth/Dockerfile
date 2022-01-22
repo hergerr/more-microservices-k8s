@@ -2,7 +2,8 @@ FROM node:alpine
 
 WORKDIR /app
 COPY package.json .
-RUN npm install
+# do not install dev dependencies
+RUN npm install --only=prod
 COPY . .
 
 CMD ["npm", "start"]
