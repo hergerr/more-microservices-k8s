@@ -3,7 +3,7 @@ import { app } from "../../app";
 
 // return is await here under the hood
 it("return 201 on successful signup", async () => {
-  return request(app)
+  await request(app)
     .post("/api/users/signup")
     .send({
       email: "test@test.com",
@@ -13,7 +13,7 @@ it("return 201 on successful signup", async () => {
 });
 
 it("return 400 with an invalid email", async () => {
-  return request(app)
+  await request(app)
     .post("/api/users/signup")
     .send({
       email: "testtest.com",
@@ -23,7 +23,7 @@ it("return 400 with an invalid email", async () => {
 });
 
 it("return 400 with an invalid password", async () => {
-  return request(app)
+  await request(app)
     .post("/api/users/signup")
     .send({
       email: "test@test.com",
@@ -37,7 +37,7 @@ it("return 400 with missing email and password", async () => {
     .post("/api/users/signup")
     .send({ email: "test@test.pl" })
     .expect(400);
-  return request(app)
+  await request(app)
     .post("/api/users/signup")
     .send({ password: "aaaaaaa" })
     .expect(400);
