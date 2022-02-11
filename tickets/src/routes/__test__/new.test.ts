@@ -90,4 +90,6 @@ it("publishes an event", async () => {
       price,
     })
     .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
