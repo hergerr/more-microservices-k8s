@@ -51,7 +51,7 @@ router.post(
     });
     await order.save();
 
-    res.status(201).send({ order });
+    res.status(201).send(order);
   }
 );
 
