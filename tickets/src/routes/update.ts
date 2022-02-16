@@ -5,6 +5,7 @@ import {
   NotFoundError,
   requireAuth,
   NothAuthorizedError,
+  BadRequestError,
 } from "@tftickects/common";
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
@@ -27,6 +28,10 @@ router.put(
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError("Cannot edit a reserved ticket");
     }
 
     // currentUser exist, it is assured by middleware
