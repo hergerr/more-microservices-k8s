@@ -10,9 +10,11 @@ const expirationQueue = new Queue<Payload>("order:expiration", {
   },
 });
 
-// code to process job fetched from redis
 expirationQueue.process(async (job) => {
-  console.log("I want to publish ", job.data.orderId);
+  console.log(
+    "I want to publish an expiration:complete event for orderId",
+    job.data.orderId
+  );
 });
 
 export { expirationQueue };

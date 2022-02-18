@@ -5,19 +5,24 @@ import { expirationQueue } from "../../queues/expiration-queue";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
-  queueGroupName: string = queueGroupName;
+  queueGroupName = queueGroupName;
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
-    // adding job for bull queue (expiration)
-    await expirationQueue.add(
-      {
-        orderId: data.id,
-      },
-      {
-        delay: 10000,
-      }
-    );
+    const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
+    console.log("Waiting this many milliseconds to process the job:", delay);
 
+    try {
+      await expirationQueue.add(
+        {
+          orderId: data.id,
+        },
+        {
+          delay,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
     msg.ack();
   }
 }
