@@ -14,7 +14,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
     const order = await Order.findOne({
       _id: data.id,
-      // idk why 449
+      // we are going to update previous version, that had 'created' status
       version: data.version - 1,
     });
 
